@@ -64,7 +64,7 @@ namespace EldosMonoPerfTest
             var count = 100;
             for (int i = 0; i < count; i++)
             {
-                LoadTest(i);
+                CreateXades(i);
             }
             WriteOut(w, count);
         }
@@ -77,7 +77,7 @@ namespace EldosMonoPerfTest
             for (int i = 0; i < count; i++)
             {
                 var i1 = i;
-                tasks.Add(Task.Factory.StartNew(() => LoadTest(i1)));
+                tasks.Add(Task.Factory.StartNew(() => CreateXades(i1)));
             }
             Task.WaitAll(tasks.ToArray());
             WriteOut(w, count);
@@ -99,7 +99,7 @@ namespace EldosMonoPerfTest
             for (int i = 0; i < count; i++)
             {
                 var i1 = i;
-                tasks.Add(Task.Factory.StartNew(() => LoadTest(i1)));
+                tasks.Add(Task.Factory.StartNew(() => CreateXades(i1)));
             }
             Task.WaitAll(tasks.ToArray());
             WriteOut(w, count);
@@ -114,7 +114,7 @@ namespace EldosMonoPerfTest
             for (int i = 0; i < count; i++)
             {
                 var i1 = i;
-                tasks.Add(new Thread(() => LoadTest(i1)));
+                tasks.Add(new Thread(() => CreateXades(i1)));
             }
             tasks.ForEach(t => t.Start());
             tasks.ForEach(t => t.Join());
@@ -137,7 +137,7 @@ namespace EldosMonoPerfTest
             Elapsed.Clear();
         }
 
-        public static void LoadTest(int i)
+        public static void CreateXades(int i)
         {
             var w = Stopwatch.StartNew();
             TElX509Certificate cert = null;
@@ -150,7 +150,7 @@ namespace EldosMonoPerfTest
 
             var XMLDocument = new TElXMLDOMDocument();
             //Read
-            var f = File.OpenRead("input.xml");
+            var f = File.Open("input.xml",FileMode.Open,FileAccess.Read,FileShare.Read);
             XMLDocument.LoadFromStream(f);
             f.Close();
 
